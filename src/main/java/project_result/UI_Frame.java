@@ -3,7 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.Stack;
 
 import javax.swing.BoxLayout;
@@ -11,8 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import project_result.Buffer;
+import project_result.Buffer.Instructions;
 
 public class UI_Frame extends JFrame implements ActionListener{
+
+	private static final long serialVersionUID = 1L;
 
 	public UI_Frame(){
 	    setVisible(true);
@@ -24,18 +26,17 @@ public class UI_Frame extends JFrame implements ActionListener{
 	    JPanel left_menu = new JPanel();
 	    left_menu.setLayout(new BoxLayout(left_menu, BoxLayout.Y_AXIS));
 	    
-	    Button btn = new Button("Go Front");
+	    Button btn = new Button("MOVE_FRONT");
 	    btn.addActionListener(this);   
-	    btn.setActionCommand("Go_Front");
-
+	    btn.setActionCommand(Instructions.MOVE_FRONT.getValue());
 	    left_menu.add(btn);
 	    
-	    left_menu.add(new Button("Go Backwards"));
-	    left_menu.add(new Button("Turn Left"));
-	    left_menu.add(new Button("Turn Right"));
-	    left_menu.add(new Button("Blink Left"));
-	    left_menu.add(new Button("Blink Right"));
-	    left_menu.add(new Button("Both Blink"));	    
+	    left_menu.add(new Button("MOVE_BACK"));
+	    left_menu.add(new Button("TURN_RIGHT"));
+	    left_menu.add(new Button("TURN_LEFT"));
+	    left_menu.add(new Button("BLINK_RIGHT"));
+	    left_menu.add(new Button("BLINK_LEFT"));	 
+	    left_menu.add(new Button("BLINK_BOTH"));
 	    
 	    add(new Button("Topic: RTC Car Control"), BorderLayout.NORTH);
 	    add(left_menu, BorderLayout.WEST);
@@ -46,11 +47,10 @@ public class UI_Frame extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
     	
     	     String cmd = e.getActionCommand();
-
-    	     
-    	     if(cmd.equals("Go_Front")){
-    	    	 	Stack inst = Buffer.instructions;
-    	    	 	inst.push("howdy");
+    	     	     
+    	     if(cmd.equals(Instructions.MOVE_FRONT.getValue())){
+    	    	 	Stack<String> inst = Buffer.instructions;
+    	    	 	inst.push(Instructions.MOVE_FRONT.getValue());
     	     }
         	
     }

@@ -61,6 +61,7 @@ public class Blink extends JArduino {
         }
         
         serialPort = "/dev/cu.usbmodem1421";
+        // serialPort = "/dev/cu.hongiPhone-WirelessiAP";
         System.out.println(serialPort);
         
         JArduino arduino = new Blink(serialPort);

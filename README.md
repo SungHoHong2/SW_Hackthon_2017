@@ -1,5 +1,9 @@
 # SW_Hackthon_2017
 
+### - project display 
+
+![First Image](README/1.jpg)
+
 
 ### - project architecture
 1. Buffer [link](src/main/java/project_result/Buffer.java)

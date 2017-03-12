@@ -160,6 +160,7 @@ public class Arduino_Frame extends JArduino{
 
 	
 	protected void init_static(){
+	  System.out.println("SHUT DOWN");
   	  digitalWrite(DigitalPin.PIN_7, DigitalState.LOW);
   	  digitalWrite(DigitalPin.PIN_12, DigitalState.LOW);
   	  digitalWrite(DigitalPin.PIN_8, DigitalState.LOW);
@@ -206,7 +207,7 @@ public class Arduino_Frame extends JArduino{
 		 
 		 if(!inst.isEmpty()){			 		     
 			   methodMap.get(inst.pop()).runCommand(Buffer.speed);			   
-			   delay(Buffer.duration*2); 			 
+			   delay(Buffer.duration*10); 			 
 			   init_static(); 
 		 }		
 	}

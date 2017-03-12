@@ -17,3 +17,15 @@
 
 4. Main_Controller [link](src/main/java/project_result/Main_Controller.java)
    - the file that runs the program 
+
+
+### UI Instructions 
+
+![First Image](README/1.png)
+![Second Image](README/2.png)
+![Third Image](README/3.png)
+
+
+
+
+

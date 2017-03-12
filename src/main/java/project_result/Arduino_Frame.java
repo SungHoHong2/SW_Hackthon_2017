@@ -3,12 +3,15 @@ package project_result;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
+
 import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PWMPin;
 import org.sintef.jarduino.PinMode;
+
 import project_result.Buffer.Instructions;
 
 interface Command {
@@ -24,13 +27,13 @@ public class Arduino_Frame extends JArduino{
 		
         methodMap.put(Instructions.FORWARD.getValue(), new Command() {
             public void runCommand(int motorSpeed) { 
-            	System.out.println("FORWARD");
-      		    digitalWrite(DigitalPin.PIN_2, DigitalState.HIGH);
+            	System.out.println("FORWARD"); 	
+      	        digitalWrite(DigitalPin.PIN_7, DigitalState.HIGH);
     		    digitalWrite(DigitalPin.PIN_12, DigitalState.HIGH);
     		    digitalWrite(DigitalPin.PIN_8, DigitalState.LOW);
     		    digitalWrite(DigitalPin.PIN_13, DigitalState.LOW);
-    		    analogWrite(PWMPin.PWM_PIN_6, (byte)map(255,0,1023,0,255)); 
-    		    analogWrite(PWMPin.PWM_PIN_11, (byte)map(255,0,1023,0,255));
+    		    analogWrite(PWMPin.PWM_PIN_6, (byte)map(1023,0,1023,0,255)); 
+    		    analogWrite(PWMPin.PWM_PIN_11, (byte)map(1023,0,1023,0,255));
             };
         });	       
          
@@ -146,17 +149,29 @@ public class Arduino_Frame extends JArduino{
     		  // backDistance = backTime*0.34/2; // this variable too!
     		  analogRead(AnalogPin.A_1); // this as well!!!
             };
-        });	
+        });	        
         
-                
+        methodMap.put(Instructions.HORN.getValue(), new Command() {
+            public void runCommand(int motorSpeed) { 
+              System.out.println("HORN");
+            };
+        });	             
 	}
 
+	
+	protected void init_static(){
+  	  digitalWrite(DigitalPin.PIN_7, DigitalState.LOW);
+  	  digitalWrite(DigitalPin.PIN_12, DigitalState.LOW);
+  	  digitalWrite(DigitalPin.PIN_8, DigitalState.LOW);
+  	  digitalWrite(DigitalPin.PIN_11, DigitalState.LOW);
+  	  analogWrite(PWMPin.PWM_PIN_6, (byte)0);
+  	  analogWrite(PWMPin.PWM_PIN_11, (byte)0);  	
+      analogWrite(PWMPin.PWM_PIN_10, (byte)0);
+	  analogWrite(PWMPin.PWM_PIN_9, (byte)0);
+	} 
 
 	@Override
 	protected void setup() {
- 		// pinMode(DigitalPin.PIN_9, PinMode.OUTPUT);
-		// pinMode(DigitalPin.PIN_10, PinMode.OUTPUT);
-		
 		  pinMode(DigitalPin.PIN_2, PinMode.OUTPUT);
 		  pinMode(DigitalPin.PIN_3, PinMode.INPUT);
 		  pinMode(DigitalPin.PIN_4, PinMode.OUTPUT);
@@ -170,15 +185,29 @@ public class Arduino_Frame extends JArduino{
 		  pinMode(DigitalPin.PIN_9, PinMode.OUTPUT);
 		  pinMode(DigitalPin.PIN_10, PinMode.OUTPUT);
 		  pinMode(DigitalPin.A_1, PinMode.INPUT);
-		  
 	}	
 	
 	@Override
 	protected void loop() {      
-		 Queue<String> inst = Buffer.instructions;		
+		 Stack<String> inst = Buffer.instructions;		
+		 Queue<String> str_inst = Buffer.storyboard_instructions;
+		 
+		 if(Buffer.start_the_storyboard && !Buffer.pause_the_storyboard && !str_inst.isEmpty()){
+			   methodMap.get(str_inst.remove()).runCommand(Buffer.speed);
+			   
+			   if(str_inst.size()==0){
+				   init_static(); 
+			    }
+			   
+			   delay(Buffer.duration); 			 
+		 }
+		 
+		 
+		 
 		 if(!inst.isEmpty()){			 		     
-			   delay(1000); 
-			   methodMap.get(inst.remove()).runCommand(0);
+			   methodMap.get(inst.pop()).runCommand(Buffer.speed);			   
+			   delay(Buffer.duration*2); 			 
+			   init_static(); 
 		 }		
 	}
 	

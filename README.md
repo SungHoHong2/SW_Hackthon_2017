@@ -1,7 +1,7 @@
 # SW_Hackthon_2017
 
 
-### 1. project architecture
+### - project architecture
 1. Buffer [link](src/main/java/project_result/Buffer.java)
    - shares stack data for sending messages between the java and arduino 
    - java application adds messages in the stack
@@ -23,7 +23,7 @@
 <br>
 
 
-### 2. UI Instructions 
+### - UI Instructions 
 
 ![First Image](README/1.png)
 ![Second Image](README/2.png)

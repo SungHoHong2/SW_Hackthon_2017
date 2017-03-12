@@ -1,7 +1,5 @@
 # SW_Hackthon_2017
 
-### - project display 
-
 ![First Image](README/1.jpg)
 
 
